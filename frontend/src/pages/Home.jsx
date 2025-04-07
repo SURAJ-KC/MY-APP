@@ -1,44 +1,23 @@
-import React, { useRef } from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import React, { useRef, useEffect, useState } from "react";
 import Showcase from "../components/Showcase";
 import Services from "../components/Services";
 import HowItWorks from "../components/HowItWorks";
 
-
 const Home = () => {
-  const showcaseRef = useRef(null);
-  const servicesRef = useRef(null);
-  const howItWorksRef = useRef(null);
-
-  const scrollToSection = (section) => {
-    if (section && section.current) {
-      section.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  };
-
   return (
     <>
       <div>
-        <header>
-          <Navbar scrollToSection={scrollToSection} showcaseRef={showcaseRef} servicesRef={servicesRef} howItWorksRef={howItWorksRef} />
-        </header>
-        
         <div>
-          <div ref={showcaseRef}>
+          <div>
             <Showcase />
           </div>
-          <div ref={servicesRef}>
+          <div>
             <Services />
           </div>
-          <div ref={howItWorksRef}>
+          <div>
             <HowItWorks />
           </div>
         </div>
-
-        <footer className="sticky bottom-0">
-          <Footer />
-        </footer>
       </div>
     </>
   );

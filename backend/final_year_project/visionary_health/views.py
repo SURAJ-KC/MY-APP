@@ -1,21 +1,25 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from keras.models import load_model  
+from keras.saving import load_model
 from PIL import Image, ImageOps
-from .models import MyImage
 from PIL import Image
 import numpy as np
-import cv2
+from io import BytesIO
 import json
 
 
+buffer  = BytesIO()
+
     # Load the model
-skin_model = load_model("keras_Model.h5", compile=False)
-plant_model = load_model("plant_keras_model.h5",compile=False)
+
+model = json.loads('keras.h5')
+print(mode)
+# skin_model = load_model("keras_model.h5", compile=False,safe_mode=False)
+# plant_model = load_model("plant_keras_model.h5",compile=False)
 
 # Load the labels
 skin_class_names = open("labels.txt", "r").readlines()
-plant_class_names = open("plant_labels.txt", "r").readlines()
+# plant_class_names = open("plant_labels.txt", "r").readlines()
 
 
 
@@ -62,52 +66,18 @@ def getData(request):
         return JsonResponse({"Data":"IN THE GET DATA VIEW"})
     
 
-
-def home(request):
-    
-    if request.method=='POST':
-        pass
-    else:
-        return render(request,"index.html")
-
-
-def human_disease(request):
-    
-    if request.method=='POST':
-        pass
-    else:
-        return render(request,"index.html")
-
-
-def crop_disease(request):
-    
-    if request.method=='POST':
-        pass
-    else:
-        return render(request,"index.html")
-    
     
 def image_upload(request):
     
     if request.method=='POST':
         image=request.FILES['image']
-        form=MyImage(img=image)
-        form.save()
-        path=form.img.path
         
-        res=predict(path)
+        res="DISEASE"
         
         return HttpResponse(f"<h1>DETECTED DISEASE : {res}</h1>")
     
     else:
-        return render(request,'image_upload.html')
-
-
-
-def last_page(request):
-    
-    return render(request,"index.html")
-
+        return HttpResponse(f"GET RESQUEST IN IMAGE UPLOAD")
 
 
     

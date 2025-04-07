@@ -1,9 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const ServicesComponent = ({ image, title, description, link }) => {
   return (
     <div className="relative group overflow-hidden rounded-lg shadow-lg h-[40vh]">
-      <a href={link} className="block">
+      <Link to={link} className="block"/>
         {/* Image */}
         <img 
           src={image} 
@@ -16,7 +17,7 @@ const ServicesComponent = ({ image, title, description, link }) => {
           <h5 className="text-xl font-semibold">{title}</h5>
           <p className="mt-2 text-sm">{description}</p>
         </div>
-      </a>
+        <Link/>
     </div>
   );
 };

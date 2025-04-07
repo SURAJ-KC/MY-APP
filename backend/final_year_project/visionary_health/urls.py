@@ -3,7 +3,5 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from . import views
 
 urlpatterns = [
-    re_path(r"^(?:.*)/?$", views.home),  
+    path("predict/", views.getData),  
 ]
-
-urlpatterns+=staticfiles_urlpatterns()

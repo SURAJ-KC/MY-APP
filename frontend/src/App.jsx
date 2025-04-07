@@ -1,16 +1,24 @@
-import "./App.css";
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import { Outlet } from "react-router-dom";
+import Showcase from "./components/Showcase";
+import HowItWorks from "./components/HowItWorks";
 
-function App() {
+const App = () => {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
+      <div className="flex flex-col h-screen overflow-hidden">
+        <header className="flex-none z-10 shadow-md">
+          <Navbar />
+        </header>
+
+        <main className="flex-grow overflow-y-auto">
+          <Outlet />
+        </main>
+      </div>
     </>
   );
-}
+};
 
 export default App;

@@ -20,7 +20,7 @@ from django.shortcuts import redirect
 
 urlpatterns = [
     path('',include("visionary_health.urls")),
-    path('', lambda request: redirect('home')), 
+    # path('', lambda request: redirect('home')), 
     path('admin/', admin.site.urls),
     
 ]
