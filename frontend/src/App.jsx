@@ -2,8 +2,6 @@ import React from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
-import Showcase from "./components/Showcase";
-import HowItWorks from "./components/HowItWorks";
 
 const App = () => {
   return (
@@ -16,6 +14,8 @@ const App = () => {
         <main className="flex-grow overflow-y-auto">
           <Outlet />
         </main>
+
+        <Footer />
       </div>
     </>
   );

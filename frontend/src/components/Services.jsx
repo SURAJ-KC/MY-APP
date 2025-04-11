@@ -12,7 +12,7 @@ const Services = () => {
             image="../../doctor.jpg"
             title="Pathology"
             description="Identify potential health conditions and get care recommendations."
-            link="human_category"
+            link="/human_category"
           />
 
           {/* Service 2 - Plant Pathology */}
@@ -20,7 +20,7 @@ const Services = () => {
             image="../../crop.jpg"
             title="Plant Pathology"
             description="Identify potential crop disease conditions and get care recommendations."
-            link="plant_category"
+            link="/plant_category"
           />
         </div>
       </div>

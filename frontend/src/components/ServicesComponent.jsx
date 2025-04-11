@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 
 const ServicesComponent = ({ image, title, description, link }) => {
   return (
-    <div className="relative group overflow-hidden rounded-lg shadow-lg h-[40vh]">
-      <Link to={link} className="block"/>
+    <Link to={link} className="block">
+      <div className="relative group overflow-hidden rounded-lg shadow-lg h-[40vh]">
         {/* Image */}
-        <img 
-          src={image} 
-          alt={title} 
+        <img
+          src={image}
+          alt={title}
           className="w-full h-[40vh] object-cover transition-transform duration-300 transform group-hover:scale-120"
         />
 
@@ -17,8 +17,8 @@ const ServicesComponent = ({ image, title, description, link }) => {
           <h5 className="text-xl font-semibold">{title}</h5>
           <p className="mt-2 text-sm">{description}</p>
         </div>
-        <Link/>
-    </div>
+      </div>
+    </Link>
   );
 };
 

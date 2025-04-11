@@ -11,20 +11,20 @@ const HumanCategory = () => {
         <ServicesComponent 
           image="../../eyes.jpg"
           title="Eyes Disease"
-          description="Identify potential health conditions and get care recommendations."
+          description="Identify potential eye conditions and get care recommendations."
           link="#"
         />
 
         <ServicesComponent 
           image="../../skin.jpg"
           title="Plant Pathology"
-          description="Identify potential crop disease conditions and get care recommendations."
+          description="Identify potential skin disease conditions and get care recommendations."
           link="#"
         />
          <ServicesComponent 
           image="../../doctor.jpg"
           title="Plant Pathology"
-          description="Identify potential crop disease conditions and get care recommendations."
+          description="Identify potential disease conditions by describing it and get care recommendations."
           link="#"
         />
 

@@ -36,7 +36,7 @@ const Navbar = ({ scrollToSection, showcaseRef, servicesRef, howItWorksRef, abou
         <div className={`${isMenuOpen ? 'block' : 'hidden'} lg:flex lg:items-center space-x-6`}>
           <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
             <li>
-              <button className="text-gray-700 hover:text-orange-500" onClick={() => scrollToSection(showcaseRef)}>
+              <button className="text-gray-700 hover:text-orange-500">
                 Home
               </button>
             </li>
