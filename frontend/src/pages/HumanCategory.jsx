@@ -3,8 +3,8 @@ import ServicesComponent from '../components/ServicesComponent'
 
 const HumanCategory = () => {
   return (
-    <section id="services" className="py-16 bg-gray-100">
-    <h2 className="text-3xl font-bold text-center mb-8">Our Services</h2>
+    <section id="services" className="py-16 bg-gray-300">
+    <h2 className="text-3xl font-bold text-center my-16">Our Services</h2>
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -22,8 +22,8 @@ const HumanCategory = () => {
           link="#"
         />
          <ServicesComponent 
-          image="../../doctor.jpg"
-          title="Plant Pathology"
+          image="../../doctor_2.jpg"
+          title="Symptom Based"
           description="Identify potential disease conditions by describing it and get care recommendations."
           link="#"
         />

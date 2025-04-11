@@ -3,10 +3,10 @@ import { Bot, BriefcaseMedical, FileChartLine, FileCheck } from 'lucide-react'
 
 const HowItWorks = () => {
   return (
-    <section id="how-it-works" className="py-16 bg-white">
-    <div className="container mx-auto px-4">
+    <section id="how-it-works" className="py-16 bg-gray-300">
+    <div className="container mx-auto px-4 flex flex-col justify-center items-center">
       <h4 className="text-3xl font-bold text-center mb-12">HOW IT WORKS</h4>
-      <div className="space-y-8">
+      <div className="flex flex-col gap-8">
         {[
           {
             icon: <FileChartLine />,

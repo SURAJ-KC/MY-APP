@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Showcase from "../components/Showcase";
 import Services from "../components/Services";
 import HowItWorks from "../components/HowItWorks";
+import About from "../components/About";
 
 const Home = () => {
   const showcaseRef = useRef(null);
@@ -32,13 +33,11 @@ const Home = () => {
       <div ref={servicesRef}>
         <Services />
       </div>
-      <div ref={howItWorksRef}>
+      <div ref={howItWorksRef} className="opacity-90">
         <HowItWorks />
       </div>
-      <div ref={aboutRef}>
-        <div className="h-screen bg-gray-200 flex items-center justify-center">
-          <h2 className="text-3xl font-semibold">About Section</h2>
-        </div>
+      <div ref={aboutRef} className="opacity-90 py-16">
+        <About />
       </div>
     </>
   );
