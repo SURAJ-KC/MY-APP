@@ -1,7 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-const ServicesComponent = ({ image, title, description, link }) => {
+const ServicesComponent = ({ image, title, description, link, category }) => {
   return (
     <Link to={link} className="block">
       <div className="relative group overflow-hidden rounded-lg shadow-lg h-[40vh]">

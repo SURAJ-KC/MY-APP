@@ -1,80 +1,213 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from keras.saving import load_model
 from PIL import Image, ImageOps
 from PIL import Image
 import numpy as np
 from io import BytesIO
 import json
+from inference_sdk import InferenceHTTPClient
+from django.views.decorators.csrf import csrf_exempt
+from google import genai
+import re
 
 
-buffer  = BytesIO()
+API_KEY = "AIzaSyAqbGSGeFGWoINax_s1Yrqvy8ogHDI5kT4"
 
-    # Load the model
+genai_model = genai.Client(api_key=API_KEY)
 
-model = json.loads('keras.h5')
-print(mode)
-# skin_model = load_model("keras_model.h5", compile=False,safe_mode=False)
-# plant_model = load_model("plant_keras_model.h5",compile=False)
-
-# Load the labels
-skin_class_names = open("labels.txt", "r").readlines()
-# plant_class_names = open("plant_labels.txt", "r").readlines()
+CLIENT = InferenceHTTPClient(
+    api_url="https://serverless.roboflow.com",
+    api_key="gU3WykiLcBJXjp3p2VCI"
+)
 
 
+def prompt_based(text):
 
-
-def predict(path):
-
-
-    # Disable scientific notation for clarity
-    np.set_printoptions(suppress=True)
+    prompt = f"""
+    You are a medical consultant AI. Based on the following user input, generate a JSON-formatted response strictly containing structured details about the disease.
+    User Input: {text}
     
-    
-    # Create the array of the right shape to feed into the keras model
-    # The 'length' or number of images you can put into the array is
-    # determined by the first position in the shape tuple, in this case 1
-    data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
-    
-    # Replace this with the path to your image
-    image = Image.open(path).convert("RGB")
-    
-    # resizing the image to be at least 224x224 and then cropping from the center
-    size = (224, 224)
-    image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
-    
-    # turn the image into a numpy array
-    image_array = np.asarray(image)
-    
-    # Normalize the image
-    normalized_image_array = (image_array.astype(np.float32) / 127.5) - 1
-    
-    # Load the image into the array
-    data[0] = normalized_image_array
-    
-    # Predicts the model
-    prediction = skin_model.predict(data)
-    index = np.argmax(prediction)
-    class_name = skin_class_names[index]
-    # confidence_score = prediction[0][index]
-    
-    return str(class_name).split()[-1]
+    Instructions:
+    1. Identify the specific disease based in the user input.
+    2. Respond ONLY with a valid JSON object (as a string) including the following keys:
+    - "disease_name"
+    - "overview"
+    - "cause"
+    - "cure"
+    - "precautions"
+    - "medications"
+    - "consultations"
+    3. Do NOT include any text outside the JSON (no explanations, no markdown).
+    4. Keep the values concise, medically accurate, and user-friendly.
 
-    
-def getData(request):
-    if request.method == 'GET':
-        return JsonResponse({"Data":"IN THE GET DATA VIEW"})
+    Output strictly in raw JSON format only.
+    """
+
+
+    response = genai_model.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=prompt,
+    )
+
+    return response
+
+
+
+def get_details(prediction,category):
+
+    prompt = f"""
+        You are a medical consultant AI. Based on the following input, generate a JSON-formatted response strictly containing structured details about the disease.
+
+        Input:
+        - Detected disease: {prediction}
+        - Category: {category} (e.g., Human or Plant)
+
+        Instructions:
+        1. Identify the specific disease class based on the category and disease name.
+        2. Respond ONLY with a valid JSON object (as a string) including the following keys:
+        - "disease_name"
+        - "overview"
+        - "cause"
+        - "cure"
+        - "precautions"
+        - "medications"
+        - "consultations"
+        3. Do NOT include any text outside the JSON (no explanations, no markdown).
+        4. Keep the values concise, medically accurate, and user-friendly.
+
+        Output strictly in raw JSON format only.
+    """
+
+
+    response = genai_model.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=prompt,
+    )
+
+    return response
     
 
-    
+
+@csrf_exempt
+def prompt_upload(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body.decode('utf-8'))
+            text = body.get('prompt') 
+
+            if not text:
+                return JsonResponse({'error': 'No prompt provided'}, status=400)
+
+            details = prompt_based(text)
+            details = details.candidates[0].content.parts[0].text
+
+            json_text = re.search(r"```json\n(.*?)\n```", details, re.DOTALL)
+
+            if json_text:
+                json_str = json_text.group(1)
+                details = json.loads(json_str)
+            else:
+                details = {"error": "Failed to parse JSON from response"}
+
+            print("DETAILS:\n", details)
+            return JsonResponse(details)
+
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        return HttpResponse("GET REQUEST IN PROMPT ROUTE")
+
+
+
+@csrf_exempt
 def image_upload(request):
     
-    if request.method=='POST':
+    if request.method=='POST':  
         image=request.FILES['image']
+        category = request.POST.get('category')
+        img = Image.open(image)
+        print("CATEGORY : \n",category)
+
+        if category == "human_eyes":
+            eye_result = CLIENT.infer(img, model_id="eye_diseases_detect/1")
+            detected_class = eye_result['predictions'][0]['class']
+
+            details = get_details(detected_class,category)
+            details = details.candidates[0].content.parts[0].text  
+            json_text = re.search(r"```json\n(.*?)\n```", details, re.DOTALL)
+
+
+            if json_text:
+                json_str = json_text.group(1)
+                details = json.loads(json_str) 
+            else:
+                details = {"erorr":"Error occured"}
+
+            print("DETAILS : \n",details)
+
+            return JsonResponse(details)
+            
+
+
+        elif category == "human_skin":
+            skin_result = CLIENT.infer(img, model_id="skin-disease-detetector/1")
+            detected_class = skin_result["predictions"][0]["class"]
+            details = get_details(detected_class,category)
+            details = details.candidates[0].content.parts[0].text  
+            json_text = re.search(r"```json\n(.*?)\n```", details, re.DOTALL)
+
+
+            if json_text:
+                json_str = json_text.group(1)
+                details = json.loads(json_str) 
+            else:
+                details = {"erorr":"Error occured"}
+
+            print("DETAILS : \n",details)
+
+            return JsonResponse(details)
+
+        elif category == "plant_leaf":
+            potato_plant = CLIENT.infer(img, model_id="potato-eh67b/3")
+            detected_class = potato_plant["predictions"][0]["class"]
+            details = get_details(detected_class,category)
+            details = details.candidates[0].content.parts[0].text  
+            json_text = re.search(r"```json\n(.*?)\n```", details, re.DOTALL)
+
+
+            if json_text:
+                json_str = json_text.group(1)
+                details = json.loads(json_str) 
+            else:
+                details = {"erorr":"Error occured"}
+
+            print("DETAILS : \n",details)
+            return JsonResponse(details)
+
+
+        elif category == "plant_rice":
+            rice_result = CLIENT.infer(img, model_id="paddy-bc4ue/3")
+            detected_class = rice_result["predictions"][0]["class"]
+            details = get_details(detected_class,category)
+            details = details.candidates[0].content.parts[0].text  
+            json_text = re.search(r"```json\n(.*?)\n```", details, re.DOTALL)
+
+
+            if json_text:
+                json_str = json_text.group(1)
+                details = json.loads(json_str) 
+            else:
+                details = {"erorr":"Error occured"}
+
+            print("DETAILS : \n",details)
+
+            return JsonResponse(details)
+
+
         
-        res="DISEASE"
-        
-        return HttpResponse(f"<h1>DETECTED DISEASE : {res}</h1>")
+        return HttpResponse(f"<h1>DETECTED DISEASE : </h1>")
     
     else:
         return HttpResponse(f"GET RESQUEST IN IMAGE UPLOAD")

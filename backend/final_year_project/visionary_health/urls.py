@@ -3,5 +3,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from . import views
 
 urlpatterns = [
-    path("predict/", views.getData),  
+    path("image_upload/", views.image_upload),
+    path("prompt/", views.prompt_upload)
 ]
