@@ -38,6 +38,11 @@ export default function PromptForm() {
     }
   };
 
+  const clearAll = () => {
+    setPrompt("");
+    setResponse("");
+  };
+
   return (
     <div className="w-[800px] mt-10 p-6 bg-white rounded shadow">
   <form onSubmit={handleSubmit} className="space-y-4 flex flex-col gap-6">
@@ -53,7 +58,7 @@ export default function PromptForm() {
       {prompt && (
         <button
           type="button"
-          onClick={() => setPrompt('')}
+          onClick={clearAll}
           className="absolute right-3 top-[52px] text-gray-500 hover:text-red-500"
           aria-label="Clear input"
         >
@@ -64,7 +69,7 @@ export default function PromptForm() {
     <div className="flex flex-col items-center">
       <button
         type="submit"
-        className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 disabled:opacity-50 w-24"
+        className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-800 disabled:opacity-50 w-24"
         disabled={loading}
       >
         Submit

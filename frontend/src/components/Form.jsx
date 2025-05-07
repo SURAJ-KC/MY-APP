@@ -64,7 +64,7 @@ const Form = () => {
         >
           <div>
             <h2 className="text-2xl font-semibold text-orange-600 mb-6 text-center">
-              Upload Image
+              Upload {category.split('_')[1].toString().toUpperCase()} Image
             </h2>
 
             <div className="mb-4">
