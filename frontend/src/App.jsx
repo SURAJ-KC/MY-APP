@@ -19,7 +19,7 @@ const App = () => {
     <div className="relative flex flex-col min-h-screen overflow-hidden">
       <div className="fixed inset-0 -z-10 bg-gray-200">
         <Particles
-          particleColors={["#000000", "#000000"]}
+          particleColors={["#ccaa97"]}
           particleCount={500}
           particleSpread={10}
           speed={0.1}

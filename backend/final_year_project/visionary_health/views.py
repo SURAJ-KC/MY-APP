@@ -107,7 +107,7 @@ def prompt_upload(request):
                 json_str = json_text.group(1)
                 details = json.loads(json_str)
             else:
-                details = {"error": "Failed to parse JSON from response"}
+                details = {"ERROR":"Error while parsing the json"}
 
             print("DETAILS:\n", details)
             return JsonResponse(details)
