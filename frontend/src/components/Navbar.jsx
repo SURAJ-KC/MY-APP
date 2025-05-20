@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { SquareActivity } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SquareActivity, Menu, X } from "lucide-react";
 
 const Navbar = ({
   scrollToSection,
@@ -13,8 +12,15 @@ const Navbar = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const toggleMenu = () => setIsMenuOpen((prev) => !prev);
+
+  const handleNavClick = (ref) => {
+    if (ref && scrollToSection) {
+      scrollToSection(ref);
+    } else {
+      navigate("/");
+    }
+    setIsMenuOpen(false); // Close menu on navigation
   };
 
   return (
@@ -37,21 +43,19 @@ const Navbar = ({
           onClick={toggleMenu}
           aria-label="Toggle menu"
         >
-          <span className="text-2xl">☰</span>
+          {isMenuOpen ? (
+            <X className="w-6 h-6 text-orange-500" />
+          ) : (
+            <Menu className="w-6 h-6 text-orange-500" />
+          )}
         </button>
 
-        {/* Navigation Links */}
-        <div
-          className={`${
-            isMenuOpen ? "block" : "hidden"
-          } lg:flex lg:items-center space-x-6`}
-        >
-          <ul className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
+        {/* Desktop Menu */}
+        <div className="hidden lg:flex items-center space-x-6">
+          <ul className="flex space-x-6">
             <li>
               <button
-                onClick={() => {
-                  showcaseRef ? scrollToSection(showcaseRef) : navigate("/"); ;
-                }}
+                onClick={() => handleNavClick(showcaseRef)}
                 className="text-gray-700 hover:text-orange-500"
               >
                 Home
@@ -59,29 +63,23 @@ const Navbar = ({
             </li>
             <li>
               <button
-                onClick={() => {
-                  servicesRef ? scrollToSection(servicesRef) : navigate("/");
-                }}
+                onClick={() => handleNavClick(servicesRef)}
                 className="text-gray-700 hover:text-orange-500"
               >
                 Services
               </button>
             </li>
             <li>
-            <button
-                onClick={() => {
-                  howItWorksRef ? scrollToSection(howItWorksRef) : navigate("/"); ;
-                }}
+              <button
+                onClick={() => handleNavClick(howItWorksRef)}
                 className="text-gray-700 hover:text-orange-500"
               >
                 How it works
               </button>
             </li>
             <li>
-            <button
-                onClick={() => {
-                  aboutRef ? scrollToSection(aboutRef) : navigate("/");
-                }}
+              <button
+                onClick={() => handleNavClick(aboutRef)}
                 className="text-gray-700 hover:text-orange-500"
               >
                 About
@@ -90,7 +88,7 @@ const Navbar = ({
           </ul>
 
           {/* Search Bar */}
-          <form className="flex items-center space-x-2 mt-4 lg:mt-0">
+          <form className="flex items-center space-x-2 ml-4">
             <input
               className="border border-gray-300 rounded px-3 py-1 focus:outline-none focus:ring-2 focus:ring-orange-500"
               type="search"
@@ -105,6 +103,61 @@ const Navbar = ({
           </form>
         </div>
       </div>
+
+      {/* Mobile Dropdown Menu */}
+      {isMenuOpen && (
+        <div className="lg:hidden bg-white px-6 pb-4 shadow-md">
+          <ul className="flex flex-col space-y-4">
+            <li>
+              <button
+                onClick={() => handleNavClick(showcaseRef)}
+                className="text-gray-700 hover:text-orange-500 w-full text-left"
+              >
+                Home
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleNavClick(servicesRef)}
+                className="text-gray-700 hover:text-orange-500 w-full text-left"
+              >
+                Services
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleNavClick(howItWorksRef)}
+                className="text-gray-700 hover:text-orange-500 w-full text-left"
+              >
+                How it works
+              </button>
+            </li>
+            <li>
+              <button
+                onClick={() => handleNavClick(aboutRef)}
+                className="text-gray-700 hover:text-orange-500 w-full text-left"
+              >
+                About
+              </button>
+            </li>
+          </ul>
+
+          {/* Mobile Search Bar */}
+          <form className="flex flex-col space-y-2 mt-4">
+            <input
+              className="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              type="search"
+              placeholder="Search"
+            />
+            <button
+              className="bg-orange-500 text-white py-2 rounded hover:bg-orange-800"
+              type="submit"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+      )}
     </nav>
   );
 };

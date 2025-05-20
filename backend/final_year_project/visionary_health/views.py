@@ -133,7 +133,7 @@ def image_upload(request):
         if category == "human_eyes":
             eye_result = CLIENT.infer(img, model_id="eye_diseases_detect/1")
             detected_class = eye_result['predictions'][0]['class']
-
+    
             details = get_details(detected_class,category)
             details = details.candidates[0].content.parts[0].text  
             json_text = re.search(r"```json\n(.*?)\n```", details, re.DOTALL)

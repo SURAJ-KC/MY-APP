@@ -1,7 +1,7 @@
 import React from "react";
 import TypingEffect from "./TypeEffect";
 
-const Showcase = () => {
+const Showcase = ({ scrollToSection, servicesRef }) => {
   return (
     <section
       id="showcase"
@@ -22,7 +22,13 @@ const Showcase = () => {
         <div>
           <TypingEffect />
         </div>
-        <button className="bg-orange-600 w-[250px] hover:bg-orange-800 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+        <button
+          onClick={() => {
+            if (scrollToSection && servicesRef) {
+              scrollToSection(servicesRef);
+            }
+          }}
+          className="bg-orange-600 w-[250px] hover:bg-orange-800 text-white font-bold py-3 px-6 rounded-lg transition duration-300">
           Start Assessment
         </button>
       </div>

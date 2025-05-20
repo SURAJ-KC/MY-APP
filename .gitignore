@@ -34,6 +34,8 @@ backend/logs/
 backend/*.log
 backend/migrations/
 backend/*.pyc
+backend/final_year_project/final_year_project/__pycache__
+backend/final_year_project/visionary_health/__pycache__
 
 # Ignore IDE/editor settings
 .vscode/

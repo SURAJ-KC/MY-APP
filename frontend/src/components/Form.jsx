@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, useParams, useLocation, Outlet } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useNavigate, useParams, Outlet } from "react-router-dom";
 import { useLoader } from "../loaderContext/LoaderContext";
 
 const Form = () => {
@@ -10,6 +10,8 @@ const Form = () => {
   const [image, setImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isResponse, setIsResponse] = useState(null);
+
+  const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -23,11 +25,13 @@ const Form = () => {
   const handleRemoveImage = () => {
     setImage(null);
     setPreviewUrl(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!image) return;
 
     const formData = new FormData();
@@ -45,7 +49,6 @@ const Form = () => {
       setIsResponse(res);
       handleRemoveImage();
 
-      // Navigate to disease details page with backend data
       navigate(`disease_details`, { state: res });
     } catch (error) {
       console.error("Upload error:", error);
@@ -60,33 +63,34 @@ const Form = () => {
       {!isResponse && (
         <form
           onSubmit={handleSubmit}
-          className="bg-white border border-orange-300 shadow-lg p-8 rounded-lg max-w-xl w-full h-[600px] mt-12 mb-12 flex flex-col justify-between"
+          className="bg-white border border-orange-300 shadow-lg p-6 sm:p-8 rounded-lg w-full max-w-xl mx-auto mt-8 mb-8 flex flex-col justify-between min-h-[600px] sm:min-h-[60 0px]"
         >
           <div>
             <h2 className="text-2xl font-semibold text-orange-600 mb-6 text-center">
-              Upload {category.split('_')[1].toString().toUpperCase()} Image
+              Upload {category.split("_")[1].toString().toUpperCase()} Image
             </h2>
 
             <div className="mb-4">
-              <label className="block text-orange-700 font-medium mb-2">
+              <label className="block text-orange-700 font-medium mb-4">
                 Select Image
               </label>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
+                ref={fileInputRef}
                 className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4
-              file:rounded-full file:border-0
-              file:text-sm file:font-semibold
-              file:bg-orange-100 file:text-orange-700
-              hover:file:bg-orange-200"
+                  file:rounded-full file:border-0
+                  file:text-sm file:font-semibold
+                  file:bg-orange-100 file:text-orange-700
+                  hover:file:bg-orange-200"
               />
             </div>
 
             {previewUrl && (
               <div className="mb-4">
                 <p className="text-sm text-orange-600 mb-2">Image Preview:</p>
-                <div className="w-full h-60 border border-orange-200 rounded overflow-hidden flex items-center justify-center bg-orange-50">
+                <div className="w-full h-52 sm:h-60 border border-orange-200 rounded overflow-hidden flex items-center justify-center bg-orange-50">
                   <img
                     src={previewUrl}
                     alt="Preview"
@@ -108,11 +112,10 @@ const Form = () => {
             type="submit"
             disabled={!image}
             className={`w-full py-2 px-4 rounded font-semibold transition 
-          ${
-            image
-              ? "bg-orange-500 hover:bg-orange-600 text-white"
-              : "bg-orange-200 text-white cursor-not-allowed"
-          }`}
+              ${image
+                ? "bg-orange-500 hover:bg-orange-600 text-white"
+                : "bg-orange-200 text-white cursor-not-allowed"
+              }`}
           >
             Submit
           </button>

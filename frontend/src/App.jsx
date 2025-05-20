@@ -19,14 +19,14 @@ const App = () => {
     <div className="relative flex flex-col min-h-screen overflow-hidden">
       <div className="fixed inset-0 -z-10 bg-gray-200">
         <Particles
-          particleColors={["#ccaa97"]}
-          particleCount={500}
-          particleSpread={10}
-          speed={0.1}
-          particleBaseSize={200}
-          moveParticlesOnHover={true}
-          alphaParticles={false}
-          disableRotation={false}
+          particleColors={["#e84105"]}
+          particleCount={600}
+          particleSpread={20}
+          speed={0}
+          particleBaseSize={300}
+          moveParticlesOnHover={false}
+          alphaParticles={true}
+          disableRotation={true}
         />
       </div>
 
@@ -34,7 +34,7 @@ const App = () => {
         <Navbar />
       </header>
 
-      <main>
+      <main className="flex-grow">
         <Outlet />
       </main>
 

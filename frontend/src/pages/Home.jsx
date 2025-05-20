@@ -28,7 +28,7 @@ const Home = () => {
       />
 
       <div ref={showcaseRef}>
-        <Showcase />
+        <Showcase scrollToSection={scrollToSection} servicesRef={servicesRef}/>
       </div>
       <div ref={servicesRef}>
         <Services />
