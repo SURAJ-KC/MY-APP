@@ -28,7 +28,7 @@ const TypingEffect = () => {
     }, []);
   
     return (
-      <div className="text-xl font-bold text-black">
+      <div className="text-xl font-bold">
         <span ref={el} />
       </div>
     );

@@ -11,7 +11,7 @@ const Showcase = ({ scrollToSection, servicesRef }) => {
       }}
     >
       {/* Background Overlay for Opacity */}
-      <div className="absolute inset-0 bg-gray-400 opacity-80"></div>
+      <div className="absolute inset-0 bg-zinc-800 opacity-80"></div>
 
       {/* Content */}
       <div className="relative flex flex-col items-center text-white gap-8 z-10">
