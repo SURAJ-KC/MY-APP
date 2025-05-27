@@ -1,9 +1,5 @@
-from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
-from PIL import Image, ImageOps
 from PIL import Image
-import numpy as np
-from io import BytesIO
 import json
 from inference_sdk import InferenceHTTPClient
 from django.views.decorators.csrf import csrf_exempt
@@ -170,7 +166,7 @@ def image_upload(request):
             return JsonResponse(details)
 
         elif category == "plant_leaf":
-            potato_plant = CLIENT.infer(img, model_id="potato-eh67b/3")
+            potato_plant = CLIENT.infer(img, model_id="anomalie_detection5/1")
             detected_class = potato_plant["predictions"][0]["class"]
             details = get_details(detected_class,category)
             details = details.candidates[0].content.parts[0].text  

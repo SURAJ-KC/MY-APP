@@ -16,10 +16,10 @@ const PlantCategory = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <ServicesComponent
-                image="../../leaf.jpg"
-                title="Plant Disease"
-                description="Identify potential plant disease and get care recommendations."
-                link="image_upload/plant_leaf"
+                image="../../potato_leaf.jpg"
+                title="Potato Disease"
+                description="Identify potential potato plant disease and get care recommendations."
+                link="image_upload/plant_potato"
               />
 
               <ServicesComponent
