@@ -165,7 +165,7 @@ def image_upload(request):
 
             return JsonResponse(details)
 
-        elif category == "plant_leaf":
+        elif category == "plant_potato":
             potato_plant = CLIENT.infer(img, model_id="anomalie_detection5/1")
             detected_class = potato_plant["predictions"][0]["class"]
             details = get_details(detected_class,category)
