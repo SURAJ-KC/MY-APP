@@ -10,7 +10,7 @@ const Services = () => {
           {/* Service 1 - Pathology */}
           <ServicesComponent 
             image="../../doctor.jpg"
-            title="Pathology"
+            title="Human Category"
             description="Identify potential health conditions and get care recommendations."
             link="/human_category"
           />
@@ -18,7 +18,7 @@ const Services = () => {
           {/* Service 2 - Plant Pathology */}
           <ServicesComponent 
             image="../../crop.jpg"
-            title="Plant Pathology"
+            title="Plant Category"
             description="Identify potential crop disease conditions and get care recommendations."
             link="/plant_category"
           />
